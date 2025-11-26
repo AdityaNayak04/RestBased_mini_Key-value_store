@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Distributed KV Store UI</title>
+
+    <style>
+        body {
+            background-color: #121212;
+            color: #e5e5e5;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+        }
+        input, button, textarea {
+            font-size: 16px;
+        }
+        input {
+            background: #1e1e1e;
+            color: #e5e5e5;
+            border: 1px solid #555;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        button {
+            background: #333;
+            color: #e5e5e5;
+            border: 1px solid #666;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        button:hover {
+            background: #444;
+        }
+        textarea {
+            background: #1e1e1e;
+            color: #e5e5e5;
+            border: 1px solid #555;
+            border-radius: 4px;
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Mini Distributed Key-Value Store (Node A + Node B)</h2>
+
+<label>Key:</label>
+<input id="key" type="text"> <br><br>
+
+<label>Value:</label>
+<input id="value" type="text"> <br><br>
+
+<button onclick="putToNodeA()">PUT (Node A → Node B)</button>
+<button onclick="getFromNodeA()">GET from Node A</button>
+<button onclick="getFromNodeB()">GET from Node B</button>
+<button onclick="getStatus()">Check Status</button>
+<button onclick="simulateFail()">Simulate Failure (__fail__)</button>
+
+<br><br>
+
+<textarea id="output" rows="15" cols="80" placeholder="Output will appear here..."></textarea>
+
+<script>
+    const A = "http://192.168.56.1:5000";
+    const B = "http://192.168.56.1:5001";
+
+    function show(data) {
+        document.getElementById("output").value =
+            typeof data === "string" ? data : JSON.stringify(data, null, 2);
+    }
+
+    async function putToNodeA() {
+        const key = document.getElementById("key").value;
+        const value = document.getElementById("value").value;
+
+        const res = await fetch(`${A}/key/${key}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ value: value })
+        });
+        show(await res.json());
+    }
+
+    async function simulateFail() {
+        const key = document.getElementById("key").value;
+
+        const res = await fetch(`${A}/key/${key}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ value: "__fail__" })
+        });
+        show(await res.json());
+    }
+
+    async function getFromNodeA() {
+        const key = document.getElementById("key").value;
+        const res = await fetch(`${A}/key/${key}`);
+        show(await res.json());
+    }
+
+    async function getFromNodeB() {
+        const key = document.getElementById("key").value;
+        const res = await fetch(`${B}/key/${key}`);
+        const json = await res.json();
+        show(json);
+    }
+
+    async function getStatus() {
+        const key = document.getElementById("key").value;
+        const res = await fetch(`${A}/status/${key}`);
+        show(await res.json());
+    }
+</script>
+
+</body>
+</html>
