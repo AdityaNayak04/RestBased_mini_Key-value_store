@@ -9,6 +9,8 @@ Abhi Ranjan       231000003
 Aditya Singh      231000004
 Aditya Nayak      231000005
 ```
+## Explanation Video
+[Watch the video](./ExplainationVideo_Grp-1.mp4)
 
 
 # REST-Based Distributed Key-Value Store (Node A + Node B)
