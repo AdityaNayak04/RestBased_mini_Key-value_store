@@ -9,9 +9,7 @@ Abhi Ranjan       231000003
 Aditya Singh      231000004
 Aditya Nayak      231000005
 ```
-## Explanation Video
-[Watch the video](./ExplainationVideo_Grp-1.mp4)
-
+### [Explaination Video](./ExplainationVideo_Grp-1.mp4)
 
 # REST-Based Distributed Key-Value Store (Node A + Node B)
 This project is a simple implementation of a REST-based distributed key-value store with primary–replica replication, built using Python + Flask.
