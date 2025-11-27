@@ -1,4 +1,4 @@
-# node_a.py
+
 from flask import Flask, request, jsonify
 import requests
 

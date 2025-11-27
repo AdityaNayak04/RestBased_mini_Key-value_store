@@ -1,4 +1,3 @@
-# node_b.py
 from flask import Flask, request, jsonify
 
 import logging
